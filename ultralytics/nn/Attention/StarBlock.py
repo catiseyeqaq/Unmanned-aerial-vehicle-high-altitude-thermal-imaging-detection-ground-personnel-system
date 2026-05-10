@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 class StarBlock(nn.Module):
@@ -15,7 +14,9 @@ class StarBlock(nn.Module):
         self.proj_bn = nn.BatchNorm2d(c2)
         self.act = nn.ReLU6(inplace=True)
         self.drop = nn.Dropout(dropout) if dropout > 0 else nn.Identity()
-        self.shortcut = nn.Identity() if c1 == c2 else nn.Sequential(nn.Conv2d(c1, c2, 1, bias=False), nn.BatchNorm2d(c2))
+        self.shortcut = (
+            nn.Identity() if c1 == c2 else nn.Sequential(nn.Conv2d(c1, c2, 1, bias=False), nn.BatchNorm2d(c2))
+        )
         self.gamma = nn.Parameter(layer_scale * torch.ones(1, c2, 1, 1)) if layer_scale > 0 else None
 
     def forward(self, x):
