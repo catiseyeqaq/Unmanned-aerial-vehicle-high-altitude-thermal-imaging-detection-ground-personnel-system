@@ -7,10 +7,9 @@ class SimAM(nn.Module):
 
     Computes 3D attention weights based on energy theory without any learnable
     parameters.  Each neuron gets a unique importance weight derived from the
-    difference between itself and the local mean, providing both channel and
-    spatial awareness at zero parameter cost.
+    difference between itself and the local mean, providing both channel and spatial awareness at zero parameter cost.
 
-    Reference:
+    References:
         Yang et al., "SimAM: A Simple, Parameter-Free Attention Module for
         Convolutional Neural Networks" (ICML 2021)
     """
@@ -25,7 +24,7 @@ class SimAM(nn.Module):
         self.e_lambda = e_lambda
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        b, c, h, w = x.size()
+        _b, _c, h, w = x.size()
         n = h * w - 1
         # Per-neuron energy: how different each value is from its spatial mean
         x_minus_mu_sq = (x - x.mean(dim=[2, 3], keepdim=True)).pow(2)
