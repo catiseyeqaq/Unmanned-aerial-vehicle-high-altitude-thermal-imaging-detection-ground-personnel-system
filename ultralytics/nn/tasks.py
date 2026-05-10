@@ -1,11 +1,4 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
-from ultralytics.nn.Attention import DSConv
-from ultralytics.nn.Attention import EMA
-from ultralytics.nn.Attention import SPDConv
-from ultralytics.nn.Attention import StarBlock
-from ultralytics.nn.Attention import BiFPNAdd2, BiFPNAdd3
-from ultralytics.nn.Attention import FasterNetBlock, FasterNetStage
-from ultralytics.nn.Attention import LSKA
 import contextlib
 import pickle
 import re
@@ -16,6 +9,17 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
+from ultralytics.nn.Attention import (
+    EMA,
+    LSKA,
+    BiFPNAdd2,
+    BiFPNAdd3,
+    DSConv,
+    FasterNetBlock,
+    FasterNetStage,
+    SPDConv,
+    StarBlock,
+)
 from ultralytics.nn.autobackend import check_class_names
 from ultralytics.nn.modules import (
     AIFI,

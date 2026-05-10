@@ -2,8 +2,7 @@ from pathlib import Path
 
 from ultralytics import YOLO
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     root = Path(__file__).resolve().parent
     model_cfg = root / "yolo11s_BSE.yaml"
     data_cfg = root / "热成像" / "data.yaml"
