@@ -21,11 +21,11 @@
 
 ## 性能
 
-| 模型 | mAP50 | mAP50-95 | imgsz |
-|------|-------|----------|-------|
-| **YOLO11s-BSE** | **0.94** | **0.94** | 1024 |
-| YOLO11s-CBSE3 | 0.88 | 0.43 | 1024 |
-| YOLO11-obb (OBB) | 0.57 | 0.41 | 640 |
+| 模型             | mAP50    | mAP50-95 | imgsz |
+| ---------------- | -------- | -------- | ----- |
+| **YOLO11s-BSE**  | **0.94** | **0.94** | 1024  |
+| YOLO11s-CBSE3    | 0.88     | 0.43     | 1024  |
+| YOLO11-obb (OBB) | 0.57     | 0.41     | 640   |
 
 ## 快速开始
 
@@ -39,22 +39,26 @@ pip install -r requirements.txt
 ```
 
 **训练**
+
 ```bash
 python train_yolo11热成像.py
 ```
 
 **推理**
+
 ```python
 from ultralytics import YOLO
+
 model = YOLO("runs/热成像/yolo11s-BSE/weights/best.pt")
 results = model("thermal_image.jpg", conf=0.25, iou=0.7)
 results[0].show()
 ```
 
 **导出**
+
 ```python
-model.export(format="onnx", imgsz=1024)       # ONNX
-model.export(format="engine", imgsz=1024)      # TensorRT
+model.export(format="onnx", imgsz=1024)  # ONNX
+model.export(format="engine", imgsz=1024)  # TensorRT
 ```
 
 ## 许可证
