@@ -140,8 +140,7 @@ def bbox_iou(
         cx2 = (b2_x1 + b2_x2) / 2
         cy2 = (b2_y1 + b2_y2) / 2
         # Wasserstein-2 distance between 2D Gaussians
-        w2_dist = (cx1 - cx2).pow(2) + (cy1 - cy2).pow(2) + \
-                  (w1.pow(2) + w2.pow(2) + h1.pow(2) + h2.pow(2)) / 12
+        w2_dist = (cx1 - cx2).pow(2) + (cy1 - cy2).pow(2) + (w1.pow(2) + w2.pow(2) + h1.pow(2) + h2.pow(2)) / 12
         # Normalize by the larger box diagonal to be scale-invariant
         # (coordinates are stride-normalized, not [0,1], so we need adaptive C)
         box_diag = torch.max(w1.pow(2) + h1.pow(2), w2.pow(2) + h2.pow(2)).clamp(min=eps)
