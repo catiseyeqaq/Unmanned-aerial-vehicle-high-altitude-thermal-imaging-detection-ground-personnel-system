@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from ultralytics import YOLO
 
 if __name__ == "__main__":

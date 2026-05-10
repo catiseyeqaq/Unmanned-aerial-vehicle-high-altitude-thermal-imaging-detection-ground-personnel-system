@@ -17,8 +17,7 @@ Examples:
     >>> subprocess.run(f"onnxslim {f} {f} && open {f}", shell=True, check=True)  # pip install onnxslim
 """
 
-from ..Attention import BiFPNAdd2, BiFPNAdd3, SimAM, CARAFE
-from .ca_ee import CoordinateAttention, EdgeEnhancement
+from ..Attention import CARAFE, BiFPNAdd2, BiFPNAdd3, SimAM
 from .block import (
     C1,
     C2,
@@ -62,6 +61,7 @@ from .block import (
     SCDown,
     TorchVision,
 )
+from .ca_ee import CoordinateAttention, EdgeEnhancement
 from .conv import (
     CBAM,
     ChannelAttention,
@@ -110,8 +110,6 @@ from .transformer import (
 
 __all__ = (
     "AIFI",
-    "BiFPNAdd2",
-    "BiFPNAdd3",
     "C1",
     "C2",
     "C2PSA",
@@ -120,9 +118,7 @@ __all__ = (
     "CARAFE",
     "CBAM",
     "CIB",
-    "CoordinateAttention",
     "DFL",
-    "EdgeEnhancement",
     "ELAN1",
     "MLP",
     "OBB",
@@ -136,6 +132,8 @@ __all__ = (
     "ADown",
     "Attention",
     "BNContrastiveHead",
+    "BiFPNAdd2",
+    "BiFPNAdd3",
     "Bottleneck",
     "BottleneckCSP",
     "C2f",
@@ -154,11 +152,13 @@ __all__ = (
     "Conv",
     "Conv2",
     "ConvTranspose",
+    "CoordinateAttention",
     "DWConv",
     "DWConvTranspose2d",
     "DeformableTransformerDecoder",
     "DeformableTransformerDecoderLayer",
     "Detect",
+    "EdgeEnhancement",
     "Focus",
     "GhostBottleneck",
     "GhostConv",
