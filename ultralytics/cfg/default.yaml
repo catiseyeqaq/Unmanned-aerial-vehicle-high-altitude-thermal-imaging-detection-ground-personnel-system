@@ -102,6 +102,8 @@ warmup_bias_lr: 0.1 # (float) bias learning rate during warmup
 box: 7.5 # (float) box loss gain
 cls: 0.5 # (float) classification loss gain
 dfl: 1.5 # (float) distribution focal loss gain
+mdpiou: False # (bool) use MPDIoU instead of CIoU for bbox regression loss
+nwd: False # (bool) use NWD (Normalized Wasserstein Distance) for bbox regression loss (better for small objects)
 pose: 12.0 # (float) pose loss gain (pose tasks)
 kobj: 1.0 # (float) keypoint objectness loss gain (pose tasks)
 rle: 1.0 # (float) rle loss gain (pose tasks)

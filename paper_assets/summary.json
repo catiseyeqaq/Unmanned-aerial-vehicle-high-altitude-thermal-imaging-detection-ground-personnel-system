@@ -1,0 +1,14 @@
+{
+  "models": [
+    "yolo11n_OBB_SPDCnov",
+    "yolo11n_OBB_DSConv",
+    "yolo11n_OBB",
+    "yolofinally_score",
+    "yolo11n_OBB_FasterNet",
+    "yolo26-OBB",
+    "yolo11n",
+    "yolo26n"
+  ],
+  "best_model": "yolo11n_OBB_SPDCnov",
+  "best_map95": 0.5898
+}

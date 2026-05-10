@@ -26,7 +26,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-requirements.txt
+!requirements.txt
 !examples/**/requirements.txt
 setup.py
 ultralytics.egg-info
@@ -203,3 +203,35 @@ calibration_*.npy
 # Training logs
 args.yaml
 results.csv
+
+# IDE and editor
+.idea/
+.cursor/
+.qoder/
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# FRP and certs
+frpc*
+*.pem
+*.crt
+*.key
+.gradio/
+
+# Nested duplicate directories
+ultralytics/ultralytics/
+
+# Web app (separate frontend/backend project)
+yolo_web_app/
+
+# Dataset images and labels (too large for git)
+热成像/images/
+热成像/labels/
+热成像/*.cache

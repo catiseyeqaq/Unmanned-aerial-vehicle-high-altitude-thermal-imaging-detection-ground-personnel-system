@@ -17,6 +17,8 @@ Examples:
     >>> subprocess.run(f"onnxslim {f} {f} && open {f}", shell=True, check=True)  # pip install onnxslim
 """
 
+from ..Attention import BiFPNAdd2, BiFPNAdd3, SimAM, CARAFE
+from .ca_ee import CoordinateAttention, EdgeEnhancement
 from .block import (
     C1,
     C2,
@@ -108,14 +110,19 @@ from .transformer import (
 
 __all__ = (
     "AIFI",
+    "BiFPNAdd2",
+    "BiFPNAdd3",
     "C1",
     "C2",
     "C2PSA",
     "C3",
     "C3TR",
+    "CARAFE",
     "CBAM",
     "CIB",
+    "CoordinateAttention",
     "DFL",
+    "EdgeEnhancement",
     "ELAN1",
     "MLP",
     "OBB",
@@ -177,6 +184,7 @@ __all__ = (
     "SCDown",
     "Segment",
     "Segment26",
+    "SimAM",
     "SpatialAttention",
     "TorchVision",
     "TransformerBlock",

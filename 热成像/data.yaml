@@ -1,0 +1,6 @@
+path: D:/ultralytics-main/热成像
+train: images/train
+val: images/val
+
+names:
+  0: people

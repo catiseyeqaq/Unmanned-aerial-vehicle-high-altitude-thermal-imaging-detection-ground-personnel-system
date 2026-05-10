@@ -1,5 +1,11 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
-
+from ultralytics.nn.Attention import DSConv
+from ultralytics.nn.Attention import EMA
+from ultralytics.nn.Attention import SPDConv
+from ultralytics.nn.Attention import StarBlock
+from ultralytics.nn.Attention import BiFPNAdd2, BiFPNAdd3
+from ultralytics.nn.Attention import FasterNetBlock, FasterNetStage
+from ultralytics.nn.Attention import LSKA
 import contextlib
 import pickle
 import re
@@ -18,6 +24,7 @@ from ultralytics.nn.modules import (
     C2PSA,
     C3,
     C3TR,
+    CARAFE,
     ELAN1,
     OBB,
     OBB26,
@@ -44,9 +51,11 @@ from ultralytics.nn.modules import (
     Conv,
     Conv2,
     ConvTranspose,
+    CoordinateAttention,
     Detect,
     DWConv,
     DWConvTranspose2d,
+    EdgeEnhancement,
     Focus,
     GhostBottleneck,
     GhostConv,
@@ -66,6 +75,7 @@ from ultralytics.nn.modules import (
     SCDown,
     Segment,
     Segment26,
+    SimAM,
     TorchVision,
     WorldDetect,
     YOLOEDetect,
@@ -1664,10 +1674,39 @@ def parse_model(d, ch, verbose=True):
             if m is HGBlock:
                 args.insert(4, n)  # number of repeats
                 n = 1
+        elif m in {DSConv, SPDConv, StarBlock, LSKA}:
+            c1, c2 = ch[f], args[0]
+            args = [c1, c2, *args[1:]]
+        elif m in {FasterNetBlock, FasterNetStage}:
+            c1, c2 = ch[f], args[0] if len(args) > 0 else ch[f]
+            args = [c1, c2, *args[1:]]
+        elif m is EMA:
+            c2 = ch[f]
+            args = [c2, *args]
+        elif m is EdgeEnhancement:
+            c2 = ch[f]
+            args = [c2, *args]
+        elif m is CoordinateAttention:
+            c2 = ch[f]
+            args = [c2, *args]
+        elif m is SimAM:
+            c2 = ch[f]
+            args = [c2, *args]
+        elif m is CARAFE:
+            c2 = ch[f]
+            args = [c2, *args]
         elif m is ResNetLayer:
             c2 = args[1] if args[3] else args[1] * 4
         elif m is torch.nn.BatchNorm2d:
             args = [ch[f]]
+        elif m in {BiFPNAdd2, BiFPNAdd3}:
+            if not isinstance(f, list) or len(f) != m.n_inputs:
+                raise ValueError(f"{m.__name__} expects {m.n_inputs} input indices, but got {f}")
+            channels = [ch[x] for x in f]
+            if len(set(channels)) != 1:
+                raise ValueError(f"{m.__name__} expects equal input channels, but got {channels}")
+            c2 = channels[0]
+            args = []
         elif m is Concat:
             c2 = sum(ch[x] for x in f)
         elif m in frozenset(
