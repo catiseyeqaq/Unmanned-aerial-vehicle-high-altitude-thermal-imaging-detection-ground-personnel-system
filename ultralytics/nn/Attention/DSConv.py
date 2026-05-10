@@ -32,7 +32,7 @@ class DSConv(nn.Module):
         return base.unsqueeze(0).repeat(b, 1, 1, 1)
 
     def _sample(self, x, offsets, horizontal=True):
-        b, c, h, w = x.shape
+        b, _c, h, w = x.shape
         base = self._base_grid(b, h, w, x.device, x.dtype)
         center = (self.k - 1) * 0.5
         out = 0.0
@@ -42,8 +42,8 @@ class DSConv(nn.Module):
         for i in range(self.k):
             dx = (i - center) * step_x if horizontal else 0.0
             dy = (i - center) * step_y if not horizontal else 0.0
-            ox = off_x[:, i:i + 1].permute(0, 2, 3, 1) * self.offset_scale * self.extend_scope * step_x
-            oy = off_y[:, i:i + 1].permute(0, 2, 3, 1) * self.offset_scale * self.extend_scope * step_y
+            ox = off_x[:, i : i + 1].permute(0, 2, 3, 1) * self.offset_scale * self.extend_scope * step_x
+            oy = off_y[:, i : i + 1].permute(0, 2, 3, 1) * self.offset_scale * self.extend_scope * step_y
             grid = base.clone()
             grid[..., 0:1] = grid[..., 0:1] + dx + ox
             grid[..., 1:2] = grid[..., 1:2] + dy + oy
