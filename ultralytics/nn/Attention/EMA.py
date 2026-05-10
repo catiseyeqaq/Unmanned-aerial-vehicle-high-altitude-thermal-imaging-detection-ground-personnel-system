@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 class EMA(nn.Module):
@@ -16,8 +15,12 @@ class EMA(nn.Module):
         self.pool_h = nn.AdaptiveAvgPool2d((None, 1))
         self.pool_w = nn.AdaptiveAvgPool2d((1, None))
         self.gn = nn.GroupNorm(self.group_channels, self.group_channels, eps=self.eps)
-        self.conv1x1 = nn.Conv2d(self.group_channels, self.group_channels, kernel_size=1, stride=1, padding=0, bias=True)
-        self.conv3x3 = nn.Conv2d(self.group_channels, self.group_channels, kernel_size=3, stride=1, padding=1, bias=True)
+        self.conv1x1 = nn.Conv2d(
+            self.group_channels, self.group_channels, kernel_size=1, stride=1, padding=0, bias=True
+        )
+        self.conv3x3 = nn.Conv2d(
+            self.group_channels, self.group_channels, kernel_size=3, stride=1, padding=1, bias=True
+        )
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
