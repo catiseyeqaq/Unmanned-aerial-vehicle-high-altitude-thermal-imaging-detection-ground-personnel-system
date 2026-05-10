@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 
 
@@ -25,8 +24,12 @@ class LSKA(nn.Module):
             d = 3
 
         p2 = ((k2 - 1) // 2) * d
-        self.dw_h2 = nn.Conv2d(c1, c1, kernel_size=(1, k2), stride=1, padding=(0, p2), dilation=(1, d), groups=c1, bias=False)
-        self.dw_v2 = nn.Conv2d(c1, c1, kernel_size=(k2, 1), stride=1, padding=(p2, 0), dilation=(d, 1), groups=c1, bias=False)
+        self.dw_h2 = nn.Conv2d(
+            c1, c1, kernel_size=(1, k2), stride=1, padding=(0, p2), dilation=(1, d), groups=c1, bias=False
+        )
+        self.dw_v2 = nn.Conv2d(
+            c1, c1, kernel_size=(k2, 1), stride=1, padding=(p2, 0), dilation=(d, 1), groups=c1, bias=False
+        )
 
         self.pw2 = nn.Conv2d(c1, c1, 1, 1, 0, bias=False)
         self.act = nn.SiLU() if act else nn.Identity()

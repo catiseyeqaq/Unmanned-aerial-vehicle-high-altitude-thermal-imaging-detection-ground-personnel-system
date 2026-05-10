@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from ultralytics import YOLO
 
 if __name__ == "__main__":
@@ -42,7 +43,7 @@ if __name__ == "__main__":
         mosaic=1.0,
         mixup=0.06,
         copy_paste=0.0,
-        close_mosaic=12, 
+        close_mosaic=12,
         erasing=0.2,
         seed=0,
         deterministic=True,
