@@ -2,14 +2,27 @@
 
 <!--Site announcement bar-->
 {% extends "base.html" %} {% block announce %}
-<a class="banner-wrapper" href="https://docs.ultralytics.com/models/yolo26">
-  <div class="banner-content-wrapper">
+<a class="banner-wrapper brand-hero brand-motion-enter" href="https://docs.ultralytics.com/models/yolo26">
+  <div class="brand-hero__glow" aria-hidden="true"></div>
+  <div class="brand-hero__orb brand-hero__orb--blue" aria-hidden="true"></div>
+  <div class="brand-hero__orb brand-hero__orb--violet" aria-hidden="true"></div>
+  <div class="banner-content-wrapper brand-hero__content">
+    <div class="brand-hero__eyebrow">
+      <span class="brand-dot"></span>
+      Gemini-Inspired Motion Docs
+    </div>
     <img
       src="https://cdn.prod.website-files.com/680a070c3b99253410dd3dcf/6967372a0d67914985d322e7_Ultralytics%20YOLO26%201.svg"
       alt="Ultralytics YOLO26"
       height="40"
     />
     <p>Built End-to-End. Built for the Edge.</p>
+    <div class="brand-hero__chips" aria-hidden="true">
+      <span class="brand-chip brand-chip--blue">Fast</span>
+      <span class="brand-chip brand-chip--amber">Fluid</span>
+      <span class="brand-chip brand-chip--green">Adaptive</span>
+      <span class="brand-chip brand-chip--violet">Expressive</span>
+    </div>
   </div>
 </a>
 {% endblock %}

@@ -2,6 +2,87 @@
 
 # 📚 Ultralytics Docs
 
+## Gemini-Inspired Motion Spec
+
+The docs theme now includes a reusable Gemini-inspired motion system implemented in:
+
+- `docs/overrides/main.html`
+- `docs/overrides/stylesheets/style.css`
+- `docs/overrides/javascript/extra.js`
+
+### Upgrade Checklist
+
+1. Replaced the static announcement bar with a branded motion hero.
+2. Added unified motion tokens for duration, easing, gradients, surfaces, and shadows.
+3. Added 8 reusable animation groups:
+   - loading shimmer
+   - enter / appear
+   - exit / disappear
+   - hover lift
+   - theme switch wash
+   - success feedback
+   - error shake
+   - empty state float
+4. Added runtime motion orchestration API via `window.UltBrandMotion`.
+5. Added motion-safe fallbacks for `prefers-reduced-motion`.
+6. Added performance event hooks for FCP, LCP, CLS, frame-ready, theme-switch, and toast events.
+
+### Brand Motion Tokens
+
+| Token | Value |
+| --- | --- |
+| Primary | `#4285f4` |
+| Secondary | `#a142f4` |
+| Success | `#34a853` |
+| Error | `#ea4335` |
+| Warning | `#fbbc05` |
+| XS duration | `140ms` |
+| SM duration | `220ms` |
+| MD duration | `380ms` |
+| LG duration | `640ms` |
+| Standard easing | `cubic-bezier(0.2, 0, 0, 1)` |
+| Emphasis easing | `cubic-bezier(0.2, 0.8, 0.2, 1)` |
+| Exit easing | `cubic-bezier(0.4, 0, 1, 1)` |
+
+### Runtime API
+
+```js
+window.UltBrandMotion.toast({ type: "success", title: "Saved", message: "Changes are live." });
+window.UltBrandMotion.success(buttonNode, "Copied successfully.");
+window.UltBrandMotion.error(formNode, "Request failed.");
+window.UltBrandMotion.empty(containerNode, {
+  title: "No results",
+  description: "Try another keyword.",
+});
+window.UltBrandMotion.observe(document);
+window.UltBrandMotion.track("custom-event", { source: "docs" });
+```
+
+### Performance Targets
+
+- 60 fps for all transform/opacity-driven transitions
+- first visual response target: `<=100ms`
+- CLS target: `<=0.1`
+- no motion-only dependency for core navigation
+
+### Verification Matrix
+
+- Chrome latest
+- Edge latest
+- Safari latest
+- Firefox latest
+- iOS Safari
+- Android Chrome
+
+### Suggested Manual Test Cases
+
+1. Load the docs homepage and verify hero entrance, chips, and staged content reveal.
+2. Hover links, buttons, cards, and admonitions and confirm lift-only motion.
+3. Toggle light/dark palette and verify theme wash animation with no layout jump.
+4. Copy a code block and verify success toast plus button feedback.
+5. Trigger reduced motion in OS settings and verify all animations are effectively disabled.
+6. Check Lighthouse / Performance panel for FCP, LCP, CLS, and long tasks.
+
 Welcome to Ultralytics Docs, your comprehensive resource for understanding and utilizing our state-of-the-art [machine learning](https://www.ultralytics.com/glossary/machine-learning-ml) tools and models, including [Ultralytics YOLO](https://docs.ultralytics.com/models/yolo26/). These documents are actively maintained and deployed to [https://docs.ultralytics.com](https://docs.ultralytics.com/) for easy access.
 
 [![pages-build-deployment](https://github.com/ultralytics/docs/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/ultralytics/docs/actions/workflows/pages/pages-build-deployment)

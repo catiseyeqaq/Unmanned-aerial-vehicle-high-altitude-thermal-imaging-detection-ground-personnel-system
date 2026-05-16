@@ -189,3 +189,274 @@ document.addEventListener("DOMContentLoaded", () => {
     document$.subscribe(() => setTimeout(fixLanguageLinks, 50));
   }
 })();
+
+// Gemini-inspired brand motion system -------------------------------------------------------------------------------
+(() => {
+  const BRAND_TOKENS = {
+    duration: {
+      xs: 140,
+      sm: 220,
+      md: 380,
+      lg: 640,
+    },
+    easing: {
+      standard: "cubic-bezier(0.2, 0, 0, 1)",
+      emphasis: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+      exit: "cubic-bezier(0.4, 0, 1, 1)",
+    },
+    colors: {
+      primary: "#4285f4",
+      secondary: "#a142f4",
+      success: "#34a853",
+      error: "#ea4335",
+      warning: "#fbbc05",
+      info: "#4fc3f7",
+    },
+  };
+
+  const BRAND_PRESETS = {
+    loading: { className: "brand-motion-loading" },
+    enter: { className: "brand-motion-enter" },
+    exit: { className: "brand-motion-exit" },
+    hover: { className: "brand-motion-hover" },
+    switch: { className: "brand-motion-switch" },
+    success: { className: "brand-feedback--success" },
+    error: { className: "brand-feedback--error" },
+    empty: { className: "brand-empty-state" },
+  };
+
+  const brandMetrics = {
+    bootStart: performance.now(),
+    fcp: null,
+    lcp: null,
+    cls: 0,
+    frameReady: null,
+  };
+
+  let toastLayer;
+  let motionObserver;
+
+  const emitMetric = (name, detail = {}) => {
+    window.dispatchEvent(new CustomEvent("ult:brand-motion-metric", { detail: { name, ...detail } }));
+  };
+
+  const getToastLayer = () => {
+    if (toastLayer?.isConnected) return toastLayer;
+    toastLayer = document.createElement("div");
+    toastLayer.className = "brand-toast-layer";
+    document.body.appendChild(toastLayer);
+    return toastLayer;
+  };
+
+  const showToast = ({ type = "success", title = "Done", message = "", timeout = 2400 } = {}) => {
+    const layer = getToastLayer();
+    const toast = document.createElement("div");
+    toast.className = `brand-toast brand-toast--${type}`;
+    toast.innerHTML = `
+      <span class="brand-toast__title">${title}</span>
+      <span class="brand-toast__body">${message}</span>
+    `;
+    layer.appendChild(toast);
+    emitMetric("toast", { type, title });
+    window.setTimeout(() => {
+      toast.classList.add("brand-motion-exit");
+      window.setTimeout(() => toast.remove(), BRAND_TOKENS.duration.sm);
+    }, timeout);
+    return toast;
+  };
+
+  const markFeedback = (node, type = "success") => {
+    if (!node) return;
+    const className = type === "error" ? BRAND_PRESETS.error.className : BRAND_PRESETS.success.className;
+    node.classList.remove(BRAND_PRESETS.error.className, BRAND_PRESETS.success.className);
+    node.classList.add(className);
+    window.setTimeout(() => node.classList.remove(className), 1600);
+  };
+
+  const createEmptyState = (container, { title = "Nothing here yet", description = "Try changing filters or searching another topic." } = {}) => {
+    if (!container) return null;
+    const empty = document.createElement("div");
+    empty.className = BRAND_PRESETS.empty.className;
+    empty.innerHTML = `<strong>${title}</strong><span>${description}</span>`;
+    container.appendChild(empty);
+    return empty;
+  };
+
+  const observeTargets = (root = document) => {
+    const targets = root.querySelectorAll(
+      ".md-content__inner > h1, .md-content__inner > h2, .md-content__inner > h3, .md-content__inner > p, .md-content__inner > ul, .md-content__inner > ol, .md-content__inner > .md-typeset__table, .md-content__inner > .highlight, .md-content__inner > .admonition, .md-content__inner > details, .md-content__inner > blockquote",
+    );
+    targets.forEach((node) => node.classList.add("motion-target"));
+
+    if (motionObserver) motionObserver.disconnect();
+    motionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          motionObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    targets.forEach((node) => motionObserver.observe(node));
+  };
+
+  const enhanceInteractiveSurfaces = (root = document) => {
+    root
+      .querySelectorAll(
+        ".ult-search-button, .md-typeset .md-button, .md-nav__link, .md-tabs__link, .share-button, .md-top, .md-typeset .admonition, .md-typeset details",
+      )
+      .forEach((node) => node.classList.add("brand-motion-hover"));
+  };
+
+  const setupThemeSwitchMotion = () => {
+    document.documentElement.classList.add("brand-motion-switch");
+    document.querySelectorAll('input[name="__palette"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        document.documentElement.classList.add("is-switching");
+        emitMetric("theme-switch");
+        window.setTimeout(() => document.documentElement.classList.remove("is-switching"), BRAND_TOKENS.duration.md);
+      });
+    });
+  };
+
+  const setupCopyFeedback = (root = document) => {
+    root.querySelectorAll("button[data-clipboard-target], .md-clipboard").forEach((button) => {
+      if (button.dataset.brandMotionBound === "true") return;
+      button.dataset.brandMotionBound = "true";
+      button.addEventListener("click", () => {
+        markFeedback(button, "success");
+        showToast({ type: "success", title: "Copied", message: "Code snippet copied to clipboard." });
+      });
+    });
+  };
+
+  const setupPageExitMotion = () => {
+    if (document.body.dataset.brandExitBound === "true") return;
+    document.body.dataset.brandExitBound = "true";
+    document.addEventListener(
+      "click",
+      (event) => {
+        const link = event.target.closest("a[href]");
+        if (!link) return;
+        const href = link.getAttribute("href") || "";
+        const isInternal = href.startsWith("/") || href.startsWith("#") || href.startsWith(location.origin);
+        if (!isInternal || href.startsWith("#")) return;
+        document.querySelector(".md-main__inner")?.classList.add("brand-motion-exit");
+      },
+      true,
+    );
+  };
+
+  const setupSearchLoading = () => {
+    const button = document.querySelector(".ult-search-button");
+    if (!button || button.dataset.brandReady === "true") return;
+    button.dataset.brandReady = "true";
+    button.classList.add("brand-motion-loading");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => button.classList.remove("brand-motion-loading"));
+    });
+  };
+
+  const setupPerformanceObservers = () => {
+    if (window.__ultBrandMotionPerfBound) return;
+    window.__ultBrandMotionPerfBound = true;
+
+    try {
+      new PerformanceObserver((entryList) => {
+        entryList.getEntries().forEach((entry) => {
+          if (entry.name === "first-contentful-paint") {
+            brandMetrics.fcp = entry.startTime;
+            emitMetric("fcp", { value: brandMetrics.fcp });
+          }
+        });
+      }).observe({ type: "paint", buffered: true });
+    } catch {}
+
+    try {
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        if (lastEntry) {
+          brandMetrics.lcp = lastEntry.startTime;
+          emitMetric("lcp", { value: brandMetrics.lcp });
+        }
+      }).observe({ type: "largest-contentful-paint", buffered: true });
+    } catch {}
+
+    try {
+      new PerformanceObserver((entryList) => {
+        entryList.getEntries().forEach((entry) => {
+          if (!entry.hadRecentInput) {
+            brandMetrics.cls += entry.value;
+          }
+        });
+        emitMetric("cls", { value: brandMetrics.cls });
+      }).observe({ type: "layout-shift", buffered: true });
+    } catch {}
+  };
+
+  const finalizeFrameMetric = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        brandMetrics.frameReady = performance.now() - brandMetrics.bootStart;
+        emitMetric("frame-ready", { value: brandMetrics.frameReady });
+      });
+    });
+  };
+
+  const initBrandMotion = () => {
+    document.documentElement.classList.add("brand-motion-ready");
+    observeTargets(document);
+    enhanceInteractiveSurfaces(document);
+    setupThemeSwitchMotion();
+    setupCopyFeedback(document);
+    setupPageExitMotion();
+    setupSearchLoading();
+    finalizeFrameMetric();
+  };
+
+  window.UltBrandMotion = {
+    version: "1.0.0",
+    tokens: BRAND_TOKENS,
+    presets: BRAND_PRESETS,
+    metrics: brandMetrics,
+    observe(root = document) {
+      observeTargets(root);
+      enhanceInteractiveSurfaces(root);
+    },
+    toast: showToast,
+    success(node, message = "Operation completed successfully.") {
+      markFeedback(node, "success");
+      return showToast({ type: "success", title: "Success", message });
+    },
+    error(node, message = "Something went wrong. Please try again.") {
+      markFeedback(node, "error");
+      return showToast({ type: "error", title: "Error", message });
+    },
+    empty(container, options) {
+      return createEmptyState(container, options);
+    },
+    switch(node = document.documentElement) {
+      node.classList.add("is-switching");
+      window.setTimeout(() => node.classList.remove("is-switching"), BRAND_TOKENS.duration.md);
+    },
+    track(name, detail = {}) {
+      emitMetric(name, detail);
+    },
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setupPerformanceObservers();
+    initBrandMotion();
+  });
+
+  if (typeof document$ !== "undefined") {
+    document$.subscribe(() => {
+      window.setTimeout(initBrandMotion, 40);
+    });
+  }
+})();
+// Gemini-inspired brand motion system -------------------------------------------------------------------------------
