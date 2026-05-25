@@ -344,7 +344,12 @@ div.highlight {
   --brand-border-soft: rgba(66, 133, 244, 0.12);
   --brand-shadow-soft: 0 12px 40px rgba(66, 133, 244, 0.08);
   --brand-shadow-hover: 0 18px 48px rgba(66, 133, 244, 0.14);
-  --brand-grad-main: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(161, 66, 244, 0.12), rgba(79, 195, 247, 0.16));
+  --brand-grad-main: linear-gradient(
+    135deg,
+    rgba(66, 133, 244, 0.2),
+    rgba(161, 66, 244, 0.12),
+    rgba(79, 195, 247, 0.16)
+  );
   --brand-grad-accent: linear-gradient(135deg, #4285f4, #a142f4 45%, #34a853 100%);
   --brand-grad-chip: linear-gradient(135deg, rgba(66, 133, 244, 0.12), rgba(161, 66, 244, 0.1));
   --brand-ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -366,7 +371,12 @@ div.highlight {
   --brand-border-soft: rgba(255, 255, 255, 0.08);
   --brand-shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.28);
   --brand-shadow-hover: 0 18px 48px rgba(0, 0, 0, 0.34);
-  --brand-grad-main: linear-gradient(135deg, rgba(66, 133, 244, 0.2), rgba(161, 66, 244, 0.16), rgba(52, 168, 83, 0.14));
+  --brand-grad-main: linear-gradient(
+    135deg,
+    rgba(66, 133, 244, 0.2),
+    rgba(161, 66, 244, 0.16),
+    rgba(52, 168, 83, 0.14)
+  );
   --brand-grad-chip: linear-gradient(135deg, rgba(66, 133, 244, 0.18), rgba(161, 66, 244, 0.16));
 }
 
@@ -492,7 +502,12 @@ html.brand-motion-ready .md-content__inner > *:nth-child(4) {
 }
 
 .brand-motion-loading {
-  background: linear-gradient(90deg, rgba(66, 133, 244, 0.08) 25%, rgba(255, 255, 255, 0.48) 50%, rgba(66, 133, 244, 0.08) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(66, 133, 244, 0.08) 25%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(66, 133, 244, 0.08) 75%
+  );
   background-size: 200% 100%;
   animation: brand-shimmer 1.4s linear infinite;
 }
