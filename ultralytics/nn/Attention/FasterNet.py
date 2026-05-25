@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 class PartialConv(nn.Module):
     def __init__(self, c1, c2, kernel_size=3, stride=1, padding=1, n_div=4, forward="split_cat"):
         super().__init__()
@@ -52,7 +53,7 @@ class FasterNetBlock(nn.Module):
             nn.Conv2d(mlp_hidden_dim, c2, 1, bias=False),
             nn.BatchNorm2d(c2),
         )
-        self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
+        self.drop_path = DropPath(drop_path) if drop_path > 0.0 else nn.Identity()
         if c1 != c2:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(c1, c2, 1, bias=False),
