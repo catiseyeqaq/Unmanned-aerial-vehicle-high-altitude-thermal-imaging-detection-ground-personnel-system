@@ -15,34 +15,34 @@ The docs theme now includes a reusable Gemini-inspired motion system implemented
 1. Replaced the static announcement bar with a branded motion hero.
 2. Added unified motion tokens for duration, easing, gradients, surfaces, and shadows.
 3. Added 8 reusable animation groups:
-   - loading shimmer
-   - enter / appear
-   - exit / disappear
-   - hover lift
-   - theme switch wash
-   - success feedback
-   - error shake
-   - empty state float
+    - loading shimmer
+    - enter / appear
+    - exit / disappear
+    - hover lift
+    - theme switch wash
+    - success feedback
+    - error shake
+    - empty state float
 4. Added runtime motion orchestration API via `window.UltBrandMotion`.
 5. Added motion-safe fallbacks for `prefers-reduced-motion`.
 6. Added performance event hooks for FCP, LCP, CLS, frame-ready, theme-switch, and toast events.
 
 ### Brand Motion Tokens
 
-| Token | Value |
-| --- | --- |
-| Primary | `#4285f4` |
-| Secondary | `#a142f4` |
-| Success | `#34a853` |
-| Error | `#ea4335` |
-| Warning | `#fbbc05` |
-| XS duration | `140ms` |
-| SM duration | `220ms` |
-| MD duration | `380ms` |
-| LG duration | `640ms` |
-| Standard easing | `cubic-bezier(0.2, 0, 0, 1)` |
+| Token           | Value                            |
+| --------------- | -------------------------------- |
+| Primary         | `#4285f4`                        |
+| Secondary       | `#a142f4`                        |
+| Success         | `#34a853`                        |
+| Error           | `#ea4335`                        |
+| Warning         | `#fbbc05`                        |
+| XS duration     | `140ms`                          |
+| SM duration     | `220ms`                          |
+| MD duration     | `380ms`                          |
+| LG duration     | `640ms`                          |
+| Standard easing | `cubic-bezier(0.2, 0, 0, 1)`     |
 | Emphasis easing | `cubic-bezier(0.2, 0.8, 0.2, 1)` |
-| Exit easing | `cubic-bezier(0.4, 0, 1, 1)` |
+| Exit easing     | `cubic-bezier(0.4, 0, 1, 1)`     |
 
 ### Runtime API
 
@@ -51,8 +51,8 @@ window.UltBrandMotion.toast({ type: "success", title: "Saved", message: "Changes
 window.UltBrandMotion.success(buttonNode, "Copied successfully.");
 window.UltBrandMotion.error(formNode, "Request failed.");
 window.UltBrandMotion.empty(containerNode, {
-  title: "No results",
-  description: "Try another keyword.",
+    title: "No results",
+    description: "Try another keyword.",
 });
 window.UltBrandMotion.observe(document);
 window.UltBrandMotion.track("custom-event", { source: "docs" });

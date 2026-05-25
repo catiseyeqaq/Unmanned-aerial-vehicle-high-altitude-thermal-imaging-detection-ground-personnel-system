@@ -1,11 +1,13 @@
+import platform
+from contextlib import nullcontext
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from contextlib import nullcontext
-import platform
 
 try:
     from torchvision.ops import deform_conv2d
+
     _HAS_DEFORM = True
 except Exception:
     deform_conv2d = None
