@@ -273,7 +273,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.setTimeout(() => node.classList.remove(className), 1600);
   };
 
-  const createEmptyState = (container, { title = "Nothing here yet", description = "Try changing filters or searching another topic." } = {}) => {
+  const createEmptyState = (
+    container,
+    { title = "Nothing here yet", description = "Try changing filters or searching another topic." } = {},
+  ) => {
     if (!container) return null;
     const empty = document.createElement("div");
     empty.className = BRAND_PRESETS.empty.className;
